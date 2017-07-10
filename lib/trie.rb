@@ -12,6 +12,7 @@ class Trie
 
   def insert(word)
     current_node = @root
+    binding.pry
     word.each_char.map do |char|
       if (current_node.char_map.has_key?(char)) == false
         current_node.char_map[char] = Node.new
@@ -43,10 +44,18 @@ class Trie
     return words
   end
 
+  def populate(file)
+    dictionary = File.read(file)
+    dictionary = dictionary.split("\n")
+    dictionary.each do |word|
+      insert(word)
+    end
+  end
+
 
 end
 
-# trie_one = Trie.new
-# trie_one.insert("hell")
-# trie_one.insert("hello")
-# p trie_one.count
+trie_one = Trie.new
+p trie_one.count
+trie_one.populate("/usr/share/dict/words")
+p trie_one.count

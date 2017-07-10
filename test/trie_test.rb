@@ -18,5 +18,5 @@ class NodeTest < Minitest::Test
     trie_one.insert("hello")
     assert_equal 2, trie_one.count
   end
-
+  
 end
