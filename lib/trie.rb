@@ -31,7 +31,7 @@ class Trie
       current_node.keys.each do |char|
         current_node = current_node[char]
         if current_node.flag == true
-          count(current_node, words += 1)
+          count(current_node, words = (words + 1)) # I think this isn't working because words is a block variable here.
         else
           count(current_node)
         end
@@ -46,7 +46,7 @@ class Trie
 
 end
 
-trie_one = Trie.new
-trie_one.insert("hell")
-trie_one.insert("hello")
-p trie_one.count
+# trie_one = Trie.new
+# trie_one.insert("hell")
+# trie_one.insert("hello")
+# p trie_one.count
