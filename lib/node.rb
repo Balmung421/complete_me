@@ -1,20 +1,16 @@
 class Node
 
-  attr_reader :value,
-              :flag,
-              :map,
-              :used
+  attr_accessor :flag,
+                :char_map,
+                :preference
 
-  def initialize (value = "")
-    @value = value
+  def initialize
     @flag = false #indicates if a node ends a word
-    @map = {} #stores links
-    @used = 0
+    @char_map = {} #stores links
+    @preference = {} #stores preference given to certain letters based on select history
   end
 
-  def word?
-    @flag == true
-  end
+
 
 
 
