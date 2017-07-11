@@ -1,84 +1,95 @@
-require_relative 'node'
-
+require './lib/node'
 require 'pry'
 
-class Trie
+class CompleteMe
 
-  attr_accessor :root
+  attr_reader :head
 
   def initialize
-    @root = Node.new
+    @head = Node.new
   end
 
   def insert(word)
-    current_node = @root
-    word.each_char.map do |char|
-      if (current_node.char_map.has_key?(char)) == false
-        current_node.char_map[char] = Node.new
-      end
-      current_node = current_node.char_map[char]
-    end
-    current_node.flag = true
-    return
+    @head.insert(word)
   end
 
-  def build_flags_list(current_node = @root, flags = [])
-    flags << current_node.flag
-    if current_node.char_map.empty? == false
-      current_node.char_map.keys.each do |char|
-        build_flags_list(current_node.char_map[char], flags)
-      end
-    end
-    return flags
+  def count
+   @head.build_flags_list.length
+   #binding.pry
   end
 
-  def count(flags_list)
-    count = 0
-    flags_list.each do |flag|
-      if flag == true
-        count += 1
-      end
-    end
-    return count
+  def suggest(suggestion)
+    traverse_node = @head.get_node(suggestion)
+    words = traverse_node.build_flags_list(suggestion)
+    weighted_list = identify_preferences(words, suggestion)
+    return weighted_list
   end
 
-  # def count_nodes(current_node = @root, words = 0)
-  #   # if current_node.flag == true
-  #   #   words += 1
-  #   # end
-  #   if current_node.char_map.empty? != true
-  #     current_node = current_node.char_map
-  #     current_node.keys.each do |char|
-  #       current_node = current_node[char]
-  #       if current_node.flag == true
-  #         words += 1
-  #          # I think this isn't working because words is a block variable here.
-  #       end
-  #       count_nodes(current_node)
-  #     end
-  #   end
-  #   return words
-  # end
-
-  def populate(file)
-    dictionary = File.read(file)
-    dictionary = dictionary.split("\n")
-    dictionary.each do |word|
+  def populate(dictionary)
+    words = dictionary.split("\n").sort
+    words.each do |word|
       insert(word)
     end
   end
 
+  def select(suggestion, weighted_word)
+    node = @head.get_node(weighted_word)
+    node.weight(suggestion)
+  end
 
-end  
+  def delete(existing_word)
+    node = @head.get_node(existing_word)
+    node.remove_word
+    disconnect_nodes(existing_word)
+  end
 
-trie_one = Trie.new
-# trie_one.insert("he")
-# trie_one.insert("hell")
-# trie_one.insert("hello")
-# trie_one.insert("bat")
-# trie_one.insert("batty")
-# trie_one.insert("battycathy")
-# p trie_one
-trie_one.populate("/usr/share/dict/words")
-x = trie_one.build_flags_list
-p trie_one.count(x)
+  def identify_preferences(words, suggestion)
+    words = get_weight_for_each_word(words, suggestion)
+    words = group_words_by_weight(words)
+    words = build_flags_list_by_weight(words)
+    words = get_sorted_list(words)
+    return words
+  end
+
+  def disconnect_nodes(word)
+    parent_node, node = @head.get_parent_and_child(word)
+    if node.char_map.empty?
+      parent_node.remove_link(word[-1])
+      if parent_node.flag == false
+        disconnect_nodes(word[0..-2])
+      end
+    end
+  end
+
+  def get_weight_for_each_word(words, suggestion)
+    words.each do | key, value|
+      words[key] = value[suggestion].to_i
+    end
+    return words
+  end
+
+  def group_words_by_weight(words)
+    words = words.group_by do | key, value |
+      value
+    end
+    return words
+  end
+
+  def build_flags_list_by_weight(words)
+    words.each do | key, value |
+      words_array = value.flatten
+      words_array = words_array.find_all { | e | e.class == String }
+      words[key] = words_array.sort!
+    end
+    return words
+  end
+
+  def get_sorted_list(words)
+    final_list = []
+    words.keys.sort.reverse.each do |key|
+      final_list.concat(words[key])
+    end
+    return final_list
+  end
+
+end
