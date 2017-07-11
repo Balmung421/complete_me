@@ -120,12 +120,6 @@ class CompleteMeTest < Minitest::Test
     assert_equal ["car","cats","cat"], weighted_list
   end
 
-  def test_populate_entire_address_list
-    trie = CompleteMe.new
-    trie.populate(large_address_list)
-    assert_equal 304559, trie.count
-  end
-
   def test_delete_no_nodes
     trie = CompleteMe.new
     trie.insert("car")
@@ -188,6 +182,12 @@ class CompleteMeTest < Minitest::Test
 
   def small_address_list
     ["542 N Kalamath St Unit 1", "2080 California St Unit 1120", "2080 California St Unit 735", "9428 E 58th Dr", "9414 E 58th Dr", "160 W Bayaud Ave", "2673 S Pearl St", "1113 E 14th Ave Unit 400", "1331 17th St"].join("\n")
+  end
+
+  def test_populate_entire_address_list
+    trie = CompleteMe.new
+    trie.populate(large_address_list)
+    assert_equal 304559, trie.count
   end
 
   def test_populate_addresses
