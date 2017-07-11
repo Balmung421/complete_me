@@ -69,7 +69,7 @@ class Trie
   end
 
 
-end
+end  
 
 trie_one = Trie.new
 # trie_one.insert("he")
