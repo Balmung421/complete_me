@@ -7,7 +7,7 @@ class Node
   def initialize
     @flag = false #indicates if a node ends a word
     @char_map = {} #stores links
-    @preference = {} #stores preference given to certain letters based on select history
+    @preference = [] #stores preference given to certain letters based on select history
   end
 
 

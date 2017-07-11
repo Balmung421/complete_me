@@ -17,6 +17,16 @@ class NodeTest < Minitest::Test
     trie_one.insert("hell")
     trie_one.insert("hello")
     assert_equal 2, trie_one.count
+
+    trie_two = Trie.new
+    trie_two.populate("/usr/share/dict/words")
+    assert_equal 235886, trie_two.count
   end
-  
+
+  def test_that_suggest_returns_all_possible_words_from_a_given_prefix
+    skip
+    trie_one = Trie.new
+
+  end
+
 end
