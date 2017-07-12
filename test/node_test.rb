@@ -5,6 +5,7 @@ require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/node'
 
+
 class NodeTest < Minitest::Test
 
   def empty_hash
@@ -80,13 +81,13 @@ class NodeTest < Minitest::Test
     assert_equal ["t"], node.char_map.keys
   end
 
-  def test_build_flags_list_short_list
+  def test_build_word_list_short_list
     head = Node.new
     head.insert("cat")
     head.insert("car")
     suggestion = "ca"
     search_node = head.get_node(suggestion)
-    words = search_node.build_flags_list(suggestion).sort
+    words = search_node.build_word_list(suggestion).sort
     assert_equal [["car",empty_hash],["cat",empty_hash]], words
   end
 

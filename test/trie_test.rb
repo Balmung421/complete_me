@@ -3,7 +3,7 @@ SimpleCov.start
 
 require 'minitest/autorun'
 require 'minitest/pride'
-require './lib/trie'
+require './lib/complete_me'
 
 class CompleteMeTest < Minitest::Test
 

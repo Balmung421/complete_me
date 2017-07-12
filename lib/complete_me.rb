@@ -14,12 +14,12 @@ class CompleteMe
   end
 
   def count
-   @head.build_flags_list.length
+   @head.build_word_list.length
   end
 
   def suggest(suggestion)
     traverse_node = @head.get_node(suggestion)
-    words = traverse_node.build_flags_list(suggestion)
+    words = traverse_node.build_word_list(suggestion)
     weighted_list = identify_preferences(words, suggestion)
     return weighted_list
   end
@@ -37,29 +37,15 @@ class CompleteMe
     node.weight(suggestion)
   end
 
-  def delete(existing_word)
-    node = @head.get_node(existing_word)
-    node.remove_word
-    disconnect_nodes(existing_word)
-  end
-
   def identify_preferences(words, suggestion)
     words = get_weight_for_each_word(words, suggestion)
     words = group_words_by_weight(words)
-    words = build_flags_list_by_weight(words)
+    words = build_word_list_by_weight(words)
     words = get_sorted_list(words)
     return words
   end
 
-  def disconnect_nodes(word)
-    parent_node, node = @head.get_parent_and_child(word)
-    if node.char_map.empty?
-      parent_node.remove_link(word[-1])
-      if parent_node.flag == false
-        disconnect_nodes(word[0..-2])
-      end
-    end
-  end
+
 
   def get_weight_for_each_word(words, suggestion)
     words.each do | key, value|
@@ -75,10 +61,10 @@ class CompleteMe
     return words
   end
 
-  def build_flags_list_by_weight(words)
+  def build_word_list_by_weight(words)
     words.each do | key, value |
       words_array = value.flatten
-      words_array = words_array.find_all { | e | e.class == String }
+      words_array = words_array.find_all { | x | x.class == String }
       words[key] = words_array.sort!
     end
     return words
@@ -88,6 +74,22 @@ class CompleteMe
     sorted_list = []
     words.keys.sort.reverse.each {|key| sorted_list.concat(words[key])}
     return sorted_list
+  end
+
+  def disconnect_nodes(word)
+    parent_node, node = @head.get_parent_and_child(word)
+    if node.char_map.empty?
+      parent_node.remove_link(word[-1])
+      if parent_node.flag == false
+        disconnect_nodes(word[0..-2])
+      end
+    end
+  end
+
+  def delete(existing_word)
+    node = @head.get_node(existing_word)
+    node.remove_word
+    disconnect_nodes(existing_word)
   end
 
 end
