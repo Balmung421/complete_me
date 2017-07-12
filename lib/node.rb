@@ -32,7 +32,6 @@ class Node
     if @flag == true
       list_of_words[suggestion] = @preference
     end
-    # binding.pry
     @char_map.each do | letter, child_node |
       list_of_words = child_node.build_flags_list(suggestion + letter, list_of_words)
     end
@@ -42,7 +41,6 @@ class Node
   def get_node(suggestion)
     letter = suggestion[@char_map_depth]
     if letter == nil
-      #binding.pry
       return self
     elsif @char_map[letter] == nil
       return nil

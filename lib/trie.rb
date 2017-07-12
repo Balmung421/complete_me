@@ -15,7 +15,6 @@ class CompleteMe
 
   def count
    @head.build_flags_list.length
-   #binding.pry
   end
 
   def suggest(suggestion)
@@ -28,6 +27,7 @@ class CompleteMe
   def populate(dictionary)
     words = dictionary.split("\n").sort
     words.each do |word|
+      word.gsub!(/\r/, '')
       insert(word)
     end
   end
@@ -85,11 +85,9 @@ class CompleteMe
   end
 
   def get_sorted_list(words)
-    final_list = []
-    words.keys.sort.reverse.each do |key|
-      final_list.concat(words[key])
-    end
-    return final_list
+    sorted_list = []
+    words.keys.sort.reverse.each {|key| sorted_list.concat(words[key])}
+    return sorted_list
   end
 
 end
