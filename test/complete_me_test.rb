@@ -188,7 +188,8 @@ class CompleteMeTest < Minitest::Test
     trie = CompleteMe.new
     #binding.pry
     trie.populate(large_address_list)
-    assert_equal 304559, trie.count
+    assert_equal 30, trie.count
+    #assert_equal 3, trie.count
   end
 
   def test_populate_addresses

@@ -25,7 +25,7 @@ class CompleteMe
   end
 
   def populate(dictionary)
-    words = dictionary.split("\n").sort
+    words = dictionary.split("\n").sort.uniq
     words.each do |word|
       word.gsub!(/\r/, '')
       insert(word)
