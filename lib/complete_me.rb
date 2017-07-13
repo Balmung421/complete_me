@@ -45,8 +45,6 @@ class CompleteMe
     return words
   end
 
-
-
   def get_weight_for_each_word(words, suggestion)
     words.each do | key, value|
       words[key] = value[suggestion].to_i

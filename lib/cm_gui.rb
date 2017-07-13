@@ -1,39 +1,34 @@
-# Shoes.setup do
-#  # require './complete_me'
-# #   require './lib/trie'
-# #   require './lib/node'
-# #   # # require '.test/'
-# end
-#
-Shoes.app(width:500, height: 500) do
+Shoes.setup do
+    require './complete_me'
+end
+
+Shoes.app(width:750, height: 600) do
 
   background "#ffffff"
   stack(margin: 12) do
-    title "Zach and Aaron's CompleteMe"
+  title "Zach and Aaron's CompleteMe"
 
-    para "Enter something to see autocorrects:"
+  para "Enter something to see autocorrects:"
 
-    flow do
-      @input = edit_line width: 100
-      @push_start = button "search (starts with)"
-      @push_all = button "search (includes)"
-    end
+  flow do
+    @input = edit_line width: 100
+    @push_start = button "search!"
+  end
 
-    @z = para 'no suggestions yet...'
+  @temp = para 'no suggestions yet...'
 
-    @push_start.click do
-      suggestions = trie.suggest(@input.text)
-      @z.replace suggestions.join("\n")
-      # @z.replace image "http://spiralofhope.com/i/ruby-shoes--nks-kidnap.png"
-    end
+  @push_start.click {
+    # trie.insert(@input.text)
+    # list_of_words = trie.suggest(@input.text).sort
+    # @temp.replace list_of_words
 
-    @push_all.click do
-
-    end
+    @temp.replace @input.text
+  }
 
   end
-  require './complete_me'
+
   dictionary = File.read('/usr/share/dict/words')
   trie = CompleteMe.new
   trie.populate(dictionary)
+
 end
